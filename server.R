@@ -46,18 +46,18 @@ shinyServer <- function(input, output, session) {
   ses <- readOGR("acs2015_5yr_B19013_15000US482014304001/acs2015_5yr_B19013_15000US482014304001.shp",
                            layer = "acs2015_5yr_B19013_15000US482014304001", GDAL1_integer64_policy = TRUE)
   
-  medianhhipal <- colorQuantile("RdYlGn", ses$B19013001, n=11)
+  medianhhipal <- colorQuantile("Blues", ses$B19013001, n = 9)
   
   output$harvey.map <- renderLeaflet({
-    leaflet(ses) %>%
+    leaflet() %>%
       setView(lat = 29.76, lng = -95.36, zoom = 10) %>%
       
       addProviderTiles(providers$Stamen.TonerLite,
                        options = providerTileOptions(noWrap = TRUE)
      ) %>%
-      addPolygons(color = ~pal(B19013001), weight = 1, smoothFactor = 0.5,
-                  opacity = 1.0, fillOpacity = 0.2
+      addPolygons(data = ses, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.4
      ) %>%
-      addCircleMarkers(data = flood, color = ~pal(sigstage))
+      addCircleMarkers(data = flood, color = ~pal(sigstage), fillOpacity = 0.9)
   })
 }
