@@ -46,6 +46,24 @@ shinyServer <- function(input, output, session) {
   ses <- readOGR("acs2015_5yr_B19013_15000US482014304001/acs2015_5yr_B19013_15000US482014304001.shp",
                            layer = "acs2015_5yr_B19013_15000US482014304001", GDAL1_integer64_policy = TRUE)
   
+  ses1 <- readOGR("acs2015_5yr_B19013_15000US480717102003/acs2015_5yr_B19013_15000US480717102003.shp",
+                 layer = "acs2015_5yr_B19013_15000US480717102003", GDAL1_integer64_policy = TRUE)
+  
+  ses2 <- readOGR("acs2015_5yr_B19013_15000US481677251002/acs2015_5yr_B19013_15000US481677251002.shp",
+                 layer = "acs2015_5yr_B19013_15000US481677251002", GDAL1_integer64_policy = TRUE)
+  
+  ses3 <- readOGR("acs2015_5yr_B19013_15000US482917008002/acs2015_5yr_B19013_15000US482917008002.shp",
+                 layer = "acs2015_5yr_B19013_15000US482917008002", GDAL1_integer64_policy = TRUE)
+  
+  ses4 <- readOGR("acs2015_5yr_B19013_15000US482450105004/acs2015_5yr_B19013_15000US482450105004.shp",
+                  layer = "acs2015_5yr_B19013_15000US482450105004", GDAL1_integer64_policy = TRUE)
+  
+  ses5 <- readOGR("acs2015_5yr_B19013_15000US481576711004/acs2015_5yr_B19013_15000US481576711004.shp",
+                  layer = "acs2015_5yr_B19013_15000US481576711004", GDAL1_integer64_policy = TRUE)
+  
+  ses6 <- readOGR("acs2015_5yr_B19013_15000US481990305024/acs2015_5yr_B19013_15000US481990305024.shp",
+                  layer = "acs2015_5yr_B19013_15000US481990305024", GDAL1_integer64_policy = TRUE)
+  
   medianhhipal <- colorQuantile("Blues", ses$B19013001, n = 9)
   
   output$harvey.map <- renderLeaflet({
@@ -58,6 +76,31 @@ shinyServer <- function(input, output, session) {
       addPolygons(data = ses, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
                   opacity = 1.0, fillOpacity = 0.4
      ) %>%
+      
+      addPolygons(data = ses1, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.4
+      ) %>%
+      
+      addPolygons(data = ses2, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.4
+      ) %>%
+      
+      addPolygons(data = ses3, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.4
+      ) %>%
+      
+      addPolygons(data = ses4, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.4
+      ) %>%
+      
+      addPolygons(data = ses5, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.4
+      ) %>%
+      
+      addPolygons(data = ses6, color = ~medianhhipal(B19013001), weight = 1, smoothFactor = 0.5,
+                  opacity = 1.0, fillOpacity = 0.4
+      ) %>%
+      
       addCircleMarkers(data = flood, color = ~pal(sigstage), fillOpacity = 0.9)
   })
 }
