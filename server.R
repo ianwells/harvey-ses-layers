@@ -9,7 +9,7 @@ library(curl)
 library(rgdal)
 
 
-api.call <- 'https://tnris-flood.carto.com/api/v2/sql?q=select%20latitude,longitude,flow,sigstage,timestamp%20from%20%22tnris-flood%22.nws_ahps_gauges_texas%20where%20sigstage%20IS%20NOT%20NULL'
+api.call <- 'https://tnris-flood.carto.com/api/v2/sql?q=select%20latitude,longitude,flow,sigstage,timestamp%20from%20%22tnris-flood%22.nws_ahps_gauges_texas%20where%20sigstage%20IS%20NOT%20NULL%20and%20latitude%20between%2022%20and%2031%20and%20longitude%20between%20-97%20and%20-91'
 
 getFloodData <- function()
 {
@@ -18,26 +18,7 @@ getFloodData <- function()
   flood$rows
 }
 
-getColor <- function(flood)
-{
-  sapply(flood$sigstage, function(sig) {
-  if(sig == 'no flooding') {
-    "green"
-  } else if(sig == 'low') {
-    "yellow"
-  } else if(sig == 'moderate') {
-    "orange"
-  } else if(sig == 'major') {
-    "red"
-  } else {
-    "grey"
-  }
-  })
-}
-
 pal <- colorFactor(c("yellow","yellow","yellow","red","orange","green","grey"),domain = c("action","flood","low","major","moderate","no flooding","not defined"))
-
-
 
 shinyServer <- function(input, output, session) {
   
