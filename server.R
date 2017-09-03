@@ -5,6 +5,7 @@ library(leaflet)
 library(tidyjson)
 library(dplyr)
 library(utils)
+library(curl)
 library(rgdal)
 
 
