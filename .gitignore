@@ -1,0 +1,6 @@
+python_sandbox*
+.DS_Store
+lib*
+*pyc*
+data*
+
