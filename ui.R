@@ -22,7 +22,7 @@ shinyUI(fluidPage(
     column(6,plotOutput("depth.plot")),
     column(6,plotOutput("value.plot"))
     ),
-  textOutput("total.dmg"),
+  span(textOutput("total.dmg"), style = "color:red"),
   
   wellPanel(id = "controls",
     selectInput("nabes", "Select Neighborhoods (autocomplete on name):",multiple = TRUE,

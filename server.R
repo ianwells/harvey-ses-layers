@@ -52,7 +52,7 @@ makeScatterPlot <- function(depth.cutoff, value.cutoff)
 makeValueDensityPlot <- function(depth.cutoff,value.cutoff)
 {
   data.f <- filterFema(depth.cutoff, value.cutoff)
-  ggplot(data = data.f, mapping = aes(x=ASSESSED_V)) + geom_density()
+  ggplot(data = data.f, mapping = aes(x=ASSESSED_V, color = DMG_LEVEL)) + geom_density() + scale_color_manual(values = c("AFF" = "YELLOW", "DES" = "BLACK", "MAJ" = "RED", "MIN" = "ORANGE"))
 }
 
 makeDepthDensityPlot <- function(depth.cutoff,value.cutoff)
