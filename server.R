@@ -23,11 +23,12 @@ fema <- read.csv('data/Harvey_FEMA_HCAD_DamageV2.txt')
 fema.f <- select(fema,DMG_LEVEL,IN_DEPTH,city,zip,LONGITUDE,LATITUDE,HCAD_NUM,ASSESSED_V)
 
 #pal <- colorFactor(c("yellow","yellow","yellow","red","orange","green","grey"),domain = c("action","flood","low","major","moderate","no flooding","not defined"))
-#pal.fema <- colorFactor(c("yellow", "black", "red", "orange"), domain = c('AFF', 'DES', 'MAJ', 'MIN'))
+
+pal.fema <- colorFactor(c("yellow", "black", "red", "orange"), domain = c('AFF', 'DES', 'MAJ', 'MIN'))
 
 filterFema <- function(depth.cutoff,value.cutoff)
 {
-  filter(fema.f, IN_DEPTH >= depth.cutoff[1], IN_DEPTH <= depth.cutoff[2], ASSESSED_V >= value.cutoff[1], ASSESSED_V <= value.cutoff[2])
+  filter(fema.f, IN_DEPTH >= depth.cutoff[1], IN_DEPTH <= depth.cutoff[2], ASSESSED_V >= (value.cutoff[1]*1000), ASSESSED_V <= (value.cutoff[2]*1000))
 }
 
 makeLeafletMap <- function(depth.cutoff, value.cutoff)
@@ -38,8 +39,8 @@ makeLeafletMap <- function(depth.cutoff, value.cutoff)
   setView(lat = 29.76, lng = -95.36, zoom = 10) %>%
   addProviderTiles(providers$Stamen.TonerLite, options = providerTileOptions(noWrap = TRUE)) %>%
   addCircles(data = data.f,
-  color = data.f$DMG_LEVEL,
-  fillOpacity = 0.7, radius = 10)
+  color =  ~pal.fema(DMG_LEVEL),
+  fillOpacity = 0.4, radius = 5)
 }
 
 makeScatterPlot <- function(depth.cutoff, value.cutoff)
@@ -57,13 +58,13 @@ makeValueDensityPlot <- function(depth.cutoff,value.cutoff)
 makeDepthDensityPlot <- function(depth.cutoff,value.cutoff)
 {
   data.f <- filterFema(depth.cutoff, value.cutoff)
-  ggplot(data = data.f, mapping = aes(x=IN_DEPTH, color = DMG_LEVEL)) + geom_density()
+  ggplot(data = data.f, mapping = aes(x=IN_DEPTH, color = DMG_LEVEL)) + geom_density() + scale_fill_manual(values = c("YELLOW", "BLACK", "RED", "ORANGE"))
 }
 
 makeSummaryValues <- function(depth.cutoff,value.cutoff)
 {
   data.f <- filterFema(depth.cutoff, value.cutoff)
-  total.damage.value <- sum(data.f$ASSESSED_V)
+  total.damage.value <- sum(as.numeric(as.character(data.f$ASSESSED_V)))
 }
 
 shinyServer <- function(input, output) 
