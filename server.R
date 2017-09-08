@@ -58,7 +58,7 @@ makeValueDensityPlot <- function(depth.cutoff,value.cutoff)
 makeDepthDensityPlot <- function(depth.cutoff,value.cutoff)
 {
   data.f <- filterFema(depth.cutoff, value.cutoff)
-  ggplot(data = data.f, mapping = aes(x=IN_DEPTH, color = DMG_LEVEL)) + geom_density() + scale_fill_manual(values = c("YELLOW", "BLACK", "RED", "ORANGE"))
+  ggplot(data = data.f, mapping = aes(x=IN_DEPTH, color = DMG_LEVEL)) + geom_density() + scale_color_manual(values = c("AFF" = "YELLOW", "DES" = "BLACK", "MAJ" = "RED", "MIN" = "ORANGE"))
 }
 
 makeSummaryValues <- function(depth.cutoff,value.cutoff)
